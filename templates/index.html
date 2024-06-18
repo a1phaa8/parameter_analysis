@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!--suppress XmlInvalidId -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elemental Health Indices</title>
+    <style>
+        /* Style for labels */
+        label {
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Style for input fields */
+        input[type="date"],
+        input[type="number"],
+        select {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+        .error {
+        color: red;
+        }
+    </style>
+    <script>
+        function disableSubmitButton() {
+            document.getElementById("submit_btn").disabled = true;
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+</head>
+<body>
+    <h1 style="text-align: center;">User Input for EHI</h1>
+    <form id="ehi_form" action="/result" method="post" onsubmit = "disableSubmitButton()">
+        <label for="ehi_selection" >EHI Selection:</label>
+        <select id="ehi_selection" name="ehi_selection[]" multiple>
+            <optgroup label="Vitals">
+                <option value="cadphr-heartrate">Heart Rate (HR)</option>
+                <option value="cadphr-sbp">Systolic Blood Pressure (SBP)</option>
+                <option value="cadphr-dbp">Diastolic Blood Pressure (DBP)</option>
+                <option value="cadphr-prq">Pulse Respiration Quotient (PRQ)</option>
+                <option value="cadphr-hrv">Heart Rate Variability (HRV)</option>
+            </optgroup>
+            <optgroup label="Emotional">
+                <option value="cadphr-emotioninstability">Emotion Instability</option>
+                <option value="cadphr-emotioninertia">Emotion Inertia</option>
+                <option value="cadphr-emotionvariability">Emotion Variability</option>
+                <option value="cadphr-pa">Positive Affect (PA)</option>
+                <option value="cadphr-na">Negative Affect (NA)</option>
+                <option value="cadphr-affect">Affect</option>
+            </optgroup>
+            <optgroup label="Risk">
+                <option value="cadphr-cadrisk10">CAD Risk 10</option>
+                <option value="cadphr-diabetesriskscore">Diabetes Risk Score (DRS)</option>
+                <option value="cadphr-osariskscore">OSA Risk Score</option>
+                <option value="cadphr-pulsepressure">Pulse Pressure (PP)</option>
+            </optgroup>
+                <option value="cadphr-henergy">Heart Energy</option>
+            <optgroup label="Endurance">
+                <option value="cadphr-vo2maxra">VO2 Max</option>
+                <option value="cadphr-dprp">Double Product or Rate-Pressure Product (DPRP)</option>
+                <option value="cadphr-hrrra">Heart Rate Recovery (HRR)</option>
+                <option value="cadphr-cvreactivity">CV Reactivity</option>
+            </optgroup>
+        </select>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" value=""/>
+        <br>
+        <br>
+
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="end_date" value=""/>
+        {% if error_date %}
+            <p class="error">{{ error_date }}</p>
+        {% endif %}
+        <br>
+        <br>
+        <label for="age_range">Age Range:</label>
+        <input type="number" id="age_range_min" name="age_range_min" min="1" max="99" /> to
+        <input type="number" id="age_range_max" name="age_range_max" min="1" max="99" />
+        {% if error_age %}
+            <p class="error">{{ error_age }}</p>
+        {% endif %}
+        <br>
+        <br>
+        <label for="bmi_range_min">BMI Range:</label>
+        <input type="number" id="bmi_range_min" name="bmi_range_min" step="0.01"/> to
+        <input type="number" id="bmi_range_max" name="bmi_range_max" step="0.01"/>
+        {% if error_bmi %}
+            <p class="error">{{ error_bmi }}</p>
+        {% endif %}
+
+        <label for="quantile">Quantile:</label>
+        <select id="quantile" name="quantile" multiple onchange="limitSelection(this, 3)">
+            <option value="25">Q1</option>
+            <option value="50">Q2</option>
+            <option value="75">Q3</option>
+            {% for i in range(1, 100) %}
+            <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="attribute">Attribute Type:</label>
+        <select id="attribute" name="attribute" multiple>
+            <option value="grade">Grade</option>
+            <option value="value">Value</option>
+        </select>
+        <br>
+        <br>
+
+        <label for="pop_type">Gender:</label>
+        <select id="pop_type" name="pop_type">
+            <option value="none">None</option>
+            <option value="all">All</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        <br>
+        <br>
+        <label for="option_for_analysis">Statistical Analysis :</label>
+        <select id="option_for_analysis" name="option_for_analysis" multiple>
+            <option value="descriptive_stats">Descriptive</option>
+            <option value="visual_stats">Visual</option>
+        </select>
+        <br>
+
+        <input type="submit" id="submit_btn" value="Submit"/>
+    </form>
+
+
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+    <script>
+        new MultiSelectTag('ehi_selection')  // id
+        new MultiSelectTag('attribute')  // id
+        new MultiSelectTag('quantile')  // id
+        new MultiSelectTag('option_for_analysis')  // id
+    </script>
+
+</body>
+</html>

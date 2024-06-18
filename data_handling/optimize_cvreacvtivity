@@ -1,0 +1,44 @@
+elif ehi_value == 'cadphr-cvreactivity':
+    sbp_json_file_path = os.path.join(json_folder, "cadphr-bloodpressure.json")
+    with open(sbp_json_file_path, 'r') as sbp_json_file:
+        sbp_data = json.load(sbp_json_file)
+        df_sbp = pd.DataFrame(sbp_data)
+    df_sbp = extract_sbp_new(df_sbp)
+
+    # Load prq DataFrame
+    prq_json_file_path = os.path.join(json_folder, "cadphr-prq.json")
+    with open(prq_json_file_path, 'r') as prq_json_file:
+        prq_data = json.load(prq_json_file)
+        df_prq = pd.DataFrame(prq_data)
+    df_prq = extract_new_ehi(df_prq, start_date, end_date)
+
+    heartrate_json_file_path = os.path.join(json_folder, "cadphr-heartrate.json")
+    with open(heartrate_json_file_path, 'r') as heartrate_json_file:
+        heartrate_data = json.load(heartrate_json_file)
+        df_hr = pd.DataFrame(heartrate_data)
+    df_hr = extract_new_ehi(df_hr, start_date, end_date)
+    df_patient = pd.read_json(data["User_data"])
+    df_patient = extract_patient_info(df_patient, data_select)
+    min_date = min(df_hr['Date'])
+    max_date = max(df_hr['Date'])
+    min_age = min(df_patient['age'])
+    max_age = max(df_patient['age'])
+    # activity_codes
+    # PRQ
+    resting_prq = 'PHR-1001'
+    postactivity_prq = 'PHR-1016'
+    # HR
+    resting_hr = '40443-4'
+    postactivity_hr = '40442-6'
+    # BP
+    resting_bp = '85354-9'
+    postactivity_bp = '88346-2'
+
+    df_react_hr = reactivity_process_df(df_hr, 'cadphr-heartrate', resting_hr, postactivity_hr)
+    df_react_sbp = reactivity_process_df(df_sbp, 'cadphr-bloodpressure', resting_bp, postactivity_bp)
+    df_react_prq = reactivity_process_df(df_prq, 'cadphr-prq', resting_prq, postactivity_prq)
+    react_features = ehi_input(cvreactivity_features)
+    lst = lst_of_df_cvreact(cvreactivity_features, df_react_hr, df_react_sbp, df_react_prq)
+    df_final = final_cv_reactivity(lst, react_features)
+    df_final = pd.merge(df_final, df_patient, on='subject_reference', how='inner')
+    ehi_dataframes[ehi_value] = df_final

@@ -1,0 +1,18 @@
+{"EHI":["cadphr-heartrate"],
+  "start_age":25,
+  "end_age": 40,
+  "gender":"male",
+  "start_Date":"",
+  "end_Date":"",
+  "BMI_start": "",
+  "BMI_end": "",
+  "sliding_window":3,
+  "day_condition":"latest",
+  "min_sufficiency":3,
+  "max_sufficiency":30,
+  "User_data": "patient_new.json",
+  "cvreactivity_features": ["hr","sbp"],
+  "percentile": [25,30],
+  "display_options": ["visual_stats", "descriptive_stats"],
+  "attribute": ["value", "grade"]
+}
