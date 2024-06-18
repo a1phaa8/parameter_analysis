@@ -1,0 +1,1 @@
+This repository contains codes for analysing individual parameters/EHIs. Anyone can get descriptive stats or visual stats from running these codes on specific set of data files containing user data for those EHI
