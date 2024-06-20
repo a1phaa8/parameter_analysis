@@ -1,6 +1,5 @@
 from data_handling.optimized_dataframe_processing import *
 
-json_folder = "json_folder"
 data = pd.read_json('configuration.json', typ='series')
 sliding_window = data["sliding_window"]
 day_condition = data["day_condition"]
