@@ -14,28 +14,28 @@ def index():
 
 @app.route('/result', methods=['POST'])
 def result():
-    # ehi_list = request.form.getlist("ehi_selection[]")
-    # if len(ehi_list) == 0:
-    #     return render_template('index.html', error="Select at least 1 EHI.")
-    ehi_list = ["cadphr-heartrate",
-    "cadphr-sbp",
-    "cadphr-dbp",
-    "cadphr-prq",
-    "cadphr-hrv",
-    "cadphr-emotioninstability",
-    "cadphr-emotioninertia",
-    "cadphr-emotionvariability",
-    "cadphr-pa",
-    "cadphr-na",
-    "cadphr-affect",
-    "cadphr-cadrisk10",
-    "cadphr-diabetesriskscore",
-    "cadphr-osariskscore",
-    "cadphr-pulsepressure",
-    "cadphr-henergy",
-    "cadphr-vo2maxra",
-    "cadphr-dprp",
-    "cadphr-hrrra"]
+    ehi_list = request.form.getlist("ehi_selection[]")
+    if len(ehi_list) == 0:
+        return render_template('index.html', error="Select at least 1 EHI.")
+    # ehi_list = ["cadphr-heartrate",
+    # "cadphr-sbp",
+    # "cadphr-dbp",
+    # "cadphr-prq",
+    # "cadphr-hrv",
+    # "cadphr-emotioninstability",
+    # "cadphr-emotioninertia",
+    # "cadphr-emotionvariability",
+    # "cadphr-pa",
+    # "cadphr-na",
+    # "cadphr-affect",
+    # "cadphr-cadrisk10",
+    # "cadphr-diabetesriskscore",
+    # "cadphr-osariskscore",
+    # "cadphr-pulsepressure",
+    # "cadphr-henergy",
+    # "cadphr-vo2maxra",
+    # "cadphr-dprp",
+    # "cadphr-hrrra"]
     start_date = request.form["start_date"]
     end_date = request.form["end_date"]
     start_age = request.form["age_range_min"]
@@ -48,7 +48,6 @@ def result():
     formal_ehi_name = []
     for parameter in ehi_list:
         formal_ehi_name.append(get_name(parameter))
-    # formal_ehi_name = get_name_list(ehi_list)
 
     if start_date:
         start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
@@ -58,18 +57,12 @@ def result():
 
     if start_age:
         start_age = int(start_age)
-    # else:
-    #     start_age = 30
 
     if end_age:
         end_age = int(end_age)
-    # else:
-    #     end_age = 40
 
     if start_bmi:
         start_bmi = float(start_bmi)
-    # else:
-    #     start_bmi = 25
 
     if end_bmi:
         end_bmi = float(end_bmi)
@@ -114,10 +107,15 @@ def result():
     # storing values returned in variables, values like
     # date range, age range, quantiles, statistics to be displayed visual or descriptive
     # and storing list of file_paths for pie chart and histogram
-    final_list, min_date, max_date, min_age, max_age, min_bmi, max_bmi, no_rows = af.print_res(ehi_list, start_age, end_age,
-                                                                                      start_date, end_date,
-                                                                                      start_bmi, end_bmi, quantile,
-                                                                                      attribute, data_s, description)
+    final_list, min_date, max_date, min_age, max_age, min_bmi, max_bmi, no_rows = af.get_final_result(ehi_list,
+                                                                                                      start_age,
+                                                                                                      end_age,
+                                                                                                      start_date,
+                                                                                                      end_date,
+                                                                                                      start_bmi,
+                                                                                                      end_bmi, quantile,
+                                                                                                      attribute, data_s,
+                                                                                                      description)
 
     # converting values to required data types
     # Convert start_age, end_age to integers

@@ -345,9 +345,9 @@ def extract_weight(df_all):
     return df
 
 
-def get_demographic_data(user_data, weight_df, height_df, gender, start_age, end_age, start_BMI, end_BMI):
+def get_demographic_data(weight_df, height_df, gender, start_age, end_age, start_BMI, end_BMI):
     no_rows = 0
-    patient_df = pd.read_json(user_data)
+    patient_df = pd.read_json("input/demographic_data/patient_new.json")
     df_patient = extract_patient_info(patient_df, gender)
     df_copy = df_patient
     print("DEMOGRAPHICS")

@@ -5,7 +5,7 @@ from data_handling.activity_code import *
 from data_handling.cvreactivity_features_optimization import *
 from data_handling.ehi_processing_functions import *
 
-json_folder = "json_folder"
+json_folder = "input/json_folder"
 
 
 # Function to determine affect type for each element in the list

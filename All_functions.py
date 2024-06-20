@@ -1,19 +1,17 @@
 from data_handling.descriptive_stats import *
 from data_handling.return_required_dataframes import *
 from data_handling.visual_stats import *
-
-# configuring the console to display all columns
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 
-start_date = data["start_Date"]
-end_date = data["end_Date"]
-data_select = data["gender"]
-start_age, end_age = data["start_age"], data["end_age"]
-BMI_lower_limit, BMI_upper_limit = data["BMI_start"], data["BMI_end"]
-stats = data["attribute"]
-des_opt = data["display_options"]
-ehi = data["EHI"]
+# start_date = data["start_Date"]
+# end_date = data["end_Date"]
+# data_select = data["gender"]
+# start_age, end_age = data["start_age"], data["end_age"]
+# BMI_lower_limit, BMI_upper_limit = data["BMI_start"], data["BMI_end"]
+# stats = data["attribute"]
+# des_opt = data["display_options"]
+# ehi = data["EHI"]
 
 
 def compare_dates(strt_d, end_d, min_d, max_d):
@@ -68,7 +66,7 @@ def compare_age(start_age, end_age, min_age, max_age):
     return start_age, end_age
 
 
-def print_res(ehi, start_age, end_age, start_date, end_date, start_bmi, end_bmi, quantile, stats, data_sel, des_opt):
+def get_final_result(ehi, start_age, end_age, start_date, end_date, start_bmi, end_bmi, quantile, stats, data_sel, des_opt):
     output_lst = []
     final_dataframe, min_date, max_date, min_age, max_age, min_bmi, max_bmi, no_rows = process_data(ehi, start_age, end_age,
                                                                                            start_date, end_date,
@@ -80,8 +78,8 @@ def print_res(ehi, start_age, end_age, start_date, end_date, start_bmi, end_bmi,
         print(f"Processed DataFrame for EHI {ehi_parameter}:")
         print(dataframe)
     if no_rows:
-        start_date = min_date
         start_age = min_age
+        end_age = max_age
         start_date = min_date
         end_date = max_date
 
